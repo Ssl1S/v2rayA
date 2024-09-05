@@ -83,6 +83,7 @@ class MainWindow
   private:
     void MWToggleVisibilitySetText();
     void MWToggleVisibility();
+    void CopyProxyToCmd();
     void OnEditRequested(const ConnectionId &id);
     void OnEditJsonRequested(const ConnectionId &id);
     void OnConnected(const ConnectionGroupPair &id);
@@ -131,6 +132,7 @@ class MainWindow
     DECL_ACTION(tray_RootMenu, tray_action_Preferences);
     DECL_ACTION(tray_RootMenu, tray_action_Quit);
     DECL_ACTION(tray_RootMenu, tray_action_Start);
+    DECL_ACTION(tray_RootMenu, tray_action_copy_cmd);
     DECL_ACTION(tray_RootMenu, tray_action_Restart);
     DECL_ACTION(tray_RootMenu, tray_action_Stop);
     DECL_ACTION(tray_RootMenu, tray_action_SetBypassCN);

@@ -29,7 +29,7 @@ namespace Qv2ray::components::plugins
     int QvPluginHost::refreshPluginList()
     {
         clearPlugins();
-        LOG("Reloading plugin list");
+        LOG("Reloading plugin list pluginDirPath:");
         for (const auto &pluginDirPath : QvCoreApplication->GetAssetsPaths("plugins"))
         {
             const QStringList entries = QDir(pluginDirPath).entryList(QDir::Files);

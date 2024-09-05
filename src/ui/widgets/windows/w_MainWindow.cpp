@@ -160,6 +160,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), QvStateObject("Ma
     tray_SystemProxyMenu->setEnabled(false);
     tray_SystemProxyMenu->addAction(tray_action_SetSystemProxy);
     tray_SystemProxyMenu->addAction(tray_action_ClearSystemProxy);
+
     //
     tray_RootMenu->addAction(tray_action_ToggleVisibility);
     tray_RootMenu->addSeparator();
@@ -171,6 +172,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), QvStateObject("Ma
     tray_RootMenu->addMenu(tray_RecentConnectionsMenu);
     connect(tray_RecentConnectionsMenu, &QMenu::aboutToShow, this, &MainWindow::OnRecentConnectionsMenuReadyToShow);
     //
+
+    tray_action_copy_cmd->setEnabled(true);
+    tray_RootMenu->addAction(tray_action_copy_cmd);
+
     tray_RootMenu->addSeparator();
     tray_RootMenu->addAction(tray_action_Start);
     tray_RootMenu->addAction(tray_action_Stop);
@@ -180,6 +185,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), QvStateObject("Ma
     qvAppTrayIcon->setContextMenu(tray_RootMenu);
     //
     connect(tray_action_ToggleVisibility, &QAction::triggered, this, &MainWindow::MWToggleVisibility);
+    connect(tray_action_copy_cmd, &QAction::triggered, this, &MainWindow::CopyProxyToCmd);
     connect(tray_action_Preferences, &QAction::triggered, this, &MainWindow::on_preferencesBtn_clicked);
     connect(tray_action_Start, &QAction::triggered, [this] { ConnectionManager->StartConnection(lastConnected); });
     connect(tray_action_Stop, &QAction::triggered, ConnectionManager, &QvConfigHandler::StopConnection);

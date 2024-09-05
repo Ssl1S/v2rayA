@@ -13,7 +13,7 @@ namespace Qv2ray::core::handler
 {
     QvConfigHandler::QvConfigHandler(QObject *parent) : QObject(parent)
     {
-        DEBUG("ConnectionHandler Constructor.");
+        DEBUG("ConnectionHandler Constructor."+ QV2RAY_CONFIG_DIR + "connections.json");
         const auto connectionJson = JsonFromString(StringFromFile(QV2RAY_CONFIG_DIR + "connections.json"));
         const auto groupJson = JsonFromString(StringFromFile(QV2RAY_CONFIG_DIR + "groups.json"));
         //
@@ -738,7 +738,7 @@ namespace Qv2ray::core::handler
                                                                 bool skipSaveConfig)
     {
         LOG("Creating new connection: " + displayName);
-        ConnectionId newId(GenerateUuid());
+        ConnectionId newId("fcd07e9b-5c94-4bdf-a714-e48c914d2fd4");
         groups[groupId].connections << newId;
         connections[newId].creationDate = system_clock::to_time_t(system_clock::now());
         connections[newId].displayName = displayName;

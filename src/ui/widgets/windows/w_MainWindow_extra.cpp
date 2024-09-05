@@ -3,6 +3,9 @@
 #include "ui/widgets/common/WidgetUIBase.hpp"
 #include "utils/QvHelpers.hpp"
 #include "w_MainWindow.hpp"
+#include <QClipboard>
+#include <QStatusBar>
+
 
 #ifdef Q_OS_MAC
 #include <ApplicationServices/ApplicationServices.h>
@@ -24,6 +27,43 @@ void MainWindow::MWToggleVisibility()
         MWShowWindow();
     else
         MWHideWindow();
+}
+void MainWindow::CopyProxyToCmd(){
+    const auto inboundInfo = KernelInstance->GetCurrentConnectionInboundInfo();
+    int httpPort = 0;
+    int socksPort = 0;
+    QString httpAddress;
+    QString socksAddress;
+
+    for (const auto &info : inboundInfo)
+    {
+        if (info.protocol == "http")
+        {
+            httpPort = info.port;
+            httpAddress = info.address;
+        }
+        else if (info.protocol == "socks")
+        {
+            socksPort = info.port;
+            socksAddress = info.address;
+        }
+    }
+
+    QString proxyCmd = QString("export https_proxy=http://127.0.0.1:%1 ").arg(httpPort);
+    proxyCmd.append(QString("http_proxy=http://127.0.0.1:%1 ").arg(httpPort));
+    proxyCmd.append(QString("all_proxy=socks5://127.0.0.1:%1").arg(socksPort));
+
+    // 获取系统剪切板
+    QClipboard* clboard = QApplication::clipboard();
+
+    // 将文本设置到剪切板
+    clboard->setText(proxyCmd);
+    statusBar()->showMessage("复制成功", 2000);
+
+//    clboard->setText("这是要设置到剪切板的文本内容");
+
+    LOG(proxyCmd);
+
 }
 
 void MainWindow::MWShowWindow()
@@ -227,10 +267,11 @@ void MainWindow::UpdateActionTranslations()
     //
     tray_action_ToggleVisibility->setText(tr("Hide"));
     tray_action_Preferences->setText(tr("Preferences"));
+    tray_action_copy_cmd->setText("代理命令到剪切板");
     tray_action_Quit->setText(tr("Quit"));
     tray_action_Start->setText(tr("Connect"));
     tray_action_Restart->setText(tr("Reconnect"));
-    tray_action_Stop->setText(tr("Disconnect"));
+    tray_action_Stop->setText(tr("Disconnect")+'1');
     tray_action_SetBypassCN->setText(tr("Enable Bypassing CN Mainland"));
     tray_action_ClearBypassCN->setText(tr("Disable Bypassing CN Mainland"));
     tray_action_SetSystemProxy->setText(tr("Enable System Proxy"));

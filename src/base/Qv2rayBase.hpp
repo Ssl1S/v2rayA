@@ -64,6 +64,11 @@ using namespace Qv2ray::base::objects::transfer;
 #define QV2RAY_DEFAULT_VASSETS_PATH (QV2RAY_CONFIG_DIR + "vcore/")
 #define QV2RAY_DEFAULT_VCORE_PATH (QV2RAY_CONFIG_DIR + "vcore/v2ray" QV2RAY_EXECUTABLE_SUFFIX)
 #define QV2RAY_DEFAULT_VCTL_PATH (QV2RAY_CONFIG_DIR + "vcore/v2ctl" QV2RAY_EXECUTABLE_SUFFIX)
+
+#define QV2RAY_DEFAULT_APP_ROOOT (QDir(QCoreApplication::applicationDirPath()).path())
+#define QV2RAY_MY_DEFAULT_VCORE_VASSETS (QV2RAY_DEFAULT_APP_ROOOT + "/../Resources/v2ray" )
+#define QV2RAY_MY_DEFAULT_VCORE_PATH (QV2RAY_MY_DEFAULT_VCORE_VASSETS + "/v2ray")
+
 #elif defined(QV2RAY_DEFAULT_VCORE_PATH) && defined(QV2RAY_DEFAULT_VASSETS_PATH)
 // ---- Using user-specified VCore and VAssets path
 #else

@@ -85,7 +85,6 @@ endif()
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.17.0")
     cmake_policy(SET CMP0100 NEW)
 endif()
-
 message(" ")
 message("Qv2ray Version: ${QV2RAY_VERSION_STRING}")
 message("Qv2ray Build Version: ${QV2RAY_BUILD_VERSION}")
@@ -108,7 +107,13 @@ message(" ")
 # ==================================================================================
 option(QV2RAY_AUTO_DEPLOY "Automatically run deploy command after build" ON)
 QVLOG(QV2RAY_AUTO_DEPLOY)
-
+set(CMAKE_OSX_ARCHITECTURES x86_64)
+# 设置 Protobuf 的路径
+#set(Protobuf_INCLUDE_DIR /usr/local/opt/protobuf@21/include)
+#set(Protobuf_LIBRARIES /usr/local/opt/protobuf@21/lib/libprotoc.dylib)  # 或者 libprotobuf.a，具体根据您的库文件后缀来设置
+#
+#find_package(Protobuf REQUIRED)
+#include_directories(${PROTOBUF_INCLUDE_DIRS})
 option(BUILD_TESTING "Build Tests" OFF)
 QVLOG(BUILD_TESTING)
 
@@ -123,6 +128,13 @@ QVLOG(QV2RAY_DISABLE_AUTO_UPDATE)
 
 option(QV2RAY_HAS_BUILTIN_PLUGINS "Build with builtin plugins" ON)
 QVLOG(QV2RAY_HAS_BUILTIN_PLUGINS)
+MESSAGE("是否打包插件")
+MESSAGE("是否打包插件")
+QVLOG(QV2RAY_HAS_BUILTIN_PLUGINS)
+QVLOG(QV2RAY_HAS_BUILTIN_PLUGINS)
+MESSAGE("是否打包插件")
+MESSAGE("是否打包插件")
+QVLOG(QV2RAY_HAS_BUILTIN_PLUGINS)
 
 option(QV2RAY_EMBED_TRANSLATIONS "Embed Translations" OFF)
 option(QV2RAY_HAS_SINGLEAPPLICATION "Build With SingleApplication" ON)
@@ -130,7 +142,8 @@ option(QV2RAY_HAS_SINGLEAPPLICATION "Build With SingleApplication" ON)
 set(QV2RAY_UI_TYPE "QWidget" CACHE STRING "Qv2ray GUI Component")
 QVLOG(QV2RAY_UI_TYPE)
 
-option(QV2RAY_QT6 "Use Qt6" OFF)
+option(QV2RAY_QT6 "Use Qt6" ON)
+set(QV2RAY_QT6 ON)
 
 if(QV2RAY_UI_TYPE STREQUAL "QWidget")
     set(QV2RAY_USE_QWIDGET ON)
@@ -264,11 +277,17 @@ find_package(Threads REQUIRED)
 find_package(${QV_QT_LIBNAME} ${QV_QT_MAJOR_VERSION}.${QV_QT_MINOR_VERSION} COMPONENTS Core Network REQUIRED)
 list(APPEND QV2RAY_QT_LIBS ${QV_QT_LIBNAME}::Core ${QV_QT_LIBNAME}::Network)
 
-cmake_policy(SET CMP0071 NEW)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-
+message("-----------------------:")
+message("-----------------------:")
+message("-----------------------:")
+message("-----------------------:")
+message("-----------------------:")
+message("QV_QT_LIBNAME: ${QV_QT_LIBNAME}")
+message("----------${QV2RAY_USE_QML}-------------:")
+message("-----------------------:")
 if(QV2RAY_USE_QML)
     find_package(${QV_QT_LIBNAME} ${QV_QT_MAJOR_VERSION}.${QV_QT_MINOR_VERSION} COMPONENTS Qml Quick Widgets Svg QuickControls2 Gui REQUIRED)
     list(APPEND QV2RAY_QT_LIBS
@@ -398,6 +417,10 @@ set(QV2RAY_FULL_SOURCES
 QVLOG(QV2RAY_QM_FILES)
 QVLOG(QV2RAY_QRC_RESOURCES)
 
+message('00000QV2RAY_UI_SOURCES00000')
+message("${QV2RAY_UI_SOURCES}")
+message('0000000000')
+message('0000000000')
 if(QV2RAY_QT6)
     qt6_add_executable(qv2ray ${GUI_TYPE} ${QV2RAY_FULL_SOURCES})
     # For Qt5, Android
@@ -407,6 +430,18 @@ else()
 endif()
 
 # set_target_properties(MAIN PROPERTIES OUTPUT_NAME "qv2ray")
+
+# 设置 rpath
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH "@executable_path/../lib")
+
+# 设置目标属性
+set_target_properties(qv2ray PROPERTIES
+        INSTALL_RPATH "@executable_path/../lib"
+        BUILD_WITH_INSTALL_RPATH TRUE
+        )
+
 
 if(ANDROID)
     qvlog(ANDROID_EXTRA_LIBS)

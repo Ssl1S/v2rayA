@@ -95,6 +95,8 @@ namespace Qv2ray::core::config
     bool LocateConfiguration()
     {
         LOG("Application exec path: " + qApp->applicationDirPath());
+        QString defaultVAssetsPath = QV2RAY_DEFAULT_APP_ROOOT;
+        LOG("QV2RAY_DEFAULT_APP_ROOOT 目录地址: " + defaultVAssetsPath);
         // Non-standard paths needs special handing for "_debug"
         const auto currentPathConfig = qApp->applicationDirPath() + "/config" QV2RAY_CONFIG_DIR_SUFFIX;
         const auto homeQv2ray = QDir::homePath() + "/.qv2ray" QV2RAY_CONFIG_DIR_SUFFIX;
@@ -211,12 +213,14 @@ namespace Qv2ray::core::config
                                      QObject::tr("Please report if you think it's a bug."));                                                   //
                 return false;
             }
+            LOG("QV2RAY_MY_DEFAULT_VCORE_PATH." + QV2RAY_MY_DEFAULT_VCORE_PATH );
 
-            GlobalConfig.kernelConfig.KernelPath(QV2RAY_DEFAULT_VCORE_PATH);
-            GlobalConfig.kernelConfig.AssetsPath(QV2RAY_DEFAULT_VASSETS_PATH);
+            GlobalConfig.kernelConfig.KernelPath(QV2RAY_MY_DEFAULT_VCORE_PATH);
+            GlobalConfig.kernelConfig.AssetsPath(QV2RAY_MY_DEFAULT_VCORE_VASSETS);
             GlobalConfig.logLevel = 3;
+//            GlobalConfig.outboundConfig = 3;
             GlobalConfig.uiConfig.language = QLocale::system().name();
-            GlobalConfig.defaultRouteConfig.dnsConfig.servers.append({ "1.1.1.1" });
+            GlobalConfig.defaultRouteConfig.dnsConfig.servers.append({ "114.114.114.114" });
             GlobalConfig.defaultRouteConfig.dnsConfig.servers.append({ "8.8.8.8" });
             GlobalConfig.defaultRouteConfig.dnsConfig.servers.append({ "8.8.4.4" });
 
